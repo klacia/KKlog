@@ -1,0 +1,55 @@
+{% extends "list.html" %}
+
+
+{% block content %}
+<div id="content">
+	<div class="post">
+		<h2 class="title"><a href="#">{{ post.title }}</a></h2>
+		<p class="meta"><span class="date">{{ post.published|date:'Y-m-j H:i:s' }}</span>
+				<!-- <span class="posted">Posted by <a href="#">Someone</a></span> -->
+		</p>
+		<div style="clear: both;">&nbsp;</div>
+		<div class="entry">
+			{{ post.body|linebreaks }}
+		</div>
+	</div>
+        
+        <!-- Comments  -->
+        <form action="{% url blog.views.delete_comment post.pk %}" method="POST">{% csrf_token %}
+            {% if comments %}
+                <p id="comments" style="margin-left: 20px; font-weight:bold;">Comments:</p>
+                
+                
+                {% for comment in comments %}
+                    <div class="comment">    
+                        <div class="time"><span class="author">{{ comment.author }}</span> | <span class="date">{{ comment.created|date:'Y-m-j H:i:s' }}</span></div>
+                        <br />
+                        <div class="body">{{ comment.body|linebreaks }}</div>
+                    
+                        {% if user.is_staff %}
+                            <input type="checkbox" name="delete" value="{{ comment.pk }}">
+                            <a href="{% url blog.views.delete_comment post.pk comment.pk %}">delete</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                
+                
+                {% if user.is_staff %}
+                    <p style="margin-left: 20px"><input type="submit" value="Delete all selected"></p>
+                {% endif %}
+                
+            {% endif %}
+        </form>
+        
+        <div id="addc">Add a comment</div>
+        <!-- Comment form  -->
+        <form action="{% url blog.views.add_comment post.id %}" method="POST">{% csrf_token %}
+            <div id="cform">
+                Name: {{ form.author }}
+                <p>{{ form.body|linebreaks }}</p>
+            </div>
+            <div id="submit"><input type="submit" value="Submit"></div>
+        </form>
+</div>
+        
+{% endblock %}
