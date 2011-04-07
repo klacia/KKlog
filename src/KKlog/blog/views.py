@@ -34,9 +34,9 @@ def post(request, pk):
     d.update(csrf(request))
     return render_to_response("blog/post.html", d)
 
-"""---------------------"""
-""" View util functions """
-"""---------------------"""
+"""----------------------"""
+""" View utils functions """
+"""----------------------"""
 
 def paginator(request, posts_list):
     paginator = Paginator(posts_list, 2)
