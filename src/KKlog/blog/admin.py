@@ -1,5 +1,6 @@
+from KKlog.blog.models import Comment, Category, Post
 from django.contrib import admin
-from KKlog.blog.models import *
+
 
 class PostAdmin(admin.ModelAdmin):
     filter_horizontal = ('categories',)

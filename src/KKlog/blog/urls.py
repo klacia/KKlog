@@ -1,5 +1,4 @@
-from django.conf.urls.defaults import *
-import os.path
+from django.conf.urls.defaults import patterns
 
 urlpatterns = patterns('KKlog.blog.views',
     (r"^(\d+)/$", "post"),                                  #post pk

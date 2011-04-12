@@ -1,13 +1,13 @@
+from KKlog.blog.models import Post, Comment
+from calendar import month_name
+from django.core.context_processors import csrf
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404, render_to_response
 from django.forms import ModelForm
-from django.core.context_processors import csrf
 from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
 import time
-from calendar import month_name
 
-from KKlog.blog.models import *
 
 """-------------------"""
 """ URL view function """
