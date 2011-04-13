@@ -3,10 +3,10 @@ from calendar import month_name
 from django.core.context_processors import csrf
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.core.urlresolvers import reverse
+from django.db import connection
 from django.forms import ModelForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.db import connection
 import time
 
 
