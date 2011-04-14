@@ -8,6 +8,7 @@ from django.forms import ModelForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 import time
+from KKlog.blog.utils import print_sql
 
 
 """-------------------"""
@@ -18,14 +19,14 @@ def main(request):
     """Main listing."""
     posts_list = Post.objects.all().order_by("-published")
     posts = paginator(request,posts_list)
-    print connection.queries
+    print_sql(connection.queries)
     return render_to_response("blog/list.html", dict(posts=posts, user=request.user, months=mkmonth_lst()))
 
 def month(request, year, month):
     """Monthly archive."""
     posts_list = Post.objects.filter(published__year=year, published__month=month)
     posts = paginator(request,posts_list)
-    print connection.queries
+    print_sql(connection.queries)
     return render_to_response("blog/list.html", dict(posts=posts, user=request.user,
                                                 months=mkmonth_lst(), archive=True))
     
@@ -35,7 +36,7 @@ def post(request, pk):
     comments = Comment.objects.filter(post=post)
     d = dict(post=post, comments=comments, form=CommentForm(), user=request.user, months=mkmonth_lst(),)
     d.update(csrf(request))
-    print connection.queries
+    print_sql(connection.queries)
     return render_to_response("blog/post.html", d)
 
 """----------------------"""
@@ -101,7 +102,7 @@ def add_comment(request, post_pk):
         comment = cf.save(commit=False)
         comment.author = author
         comment.save()
-    print connection.queries
+    print_sql(connection.queries)
     return HttpResponseRedirect(reverse("KKlog.blog.views.post", args=[post_pk]))
     
 def delete_comment(request, post_pk, comment_pk=None):
@@ -113,5 +114,5 @@ def delete_comment(request, post_pk, comment_pk=None):
         for pk in pklst:
             Comment.objects.get(pk=pk).delete()
     
-    print connection.queries
+    print_sql(connection.queries)
     return HttpResponseRedirect(reverse("KKlog.blog.views.post", args=[post_pk]))
